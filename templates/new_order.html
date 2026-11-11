@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}Bagong order{% endblock %}
+{% block heading %}Bagong order{% endblock %}
+{% block meta %}{{ today_label }}{% endblock %}
+{% block top_right %}<span class="queue">#{{ next_no }}</span>{% endblock %}
+
+{% block content %}
+<div id="app" data-menu='{{ menu|tojson }}' data-orders-url="{{ url_for('orders') }}" data-api-url="{{ url_for('api_create_order') }}">
+
+  <section class="block">
+    <div class="label">1 · FLAVOR</div>
+    <div class="grid2" id="flavors"></div>
+  </section>
+
+  <section class="block">
+    <div class="label">2 · LAKI</div>
+    <div class="grid2" id="sizes">
+      <button type="button" class="seg big" data-value="4">4 pcs</button>
+      <button type="button" class="seg big" data-value="8">8 pcs</button>
+    </div>
+  </section>
+
+  <section class="grid2">
+    <button type="button" class="switch" id="spicy" role="switch" aria-checked="false">
+      <span>Spicy</span><span class="track"><span class="knob"></span></span>
+    </button>
+    <div class="grid2 tight" id="packs">
+      <button type="button" class="seg" data-value="Plastic">Plastic</button>
+      <button type="button" class="seg" data-value="Box">Box</button>
+    </div>
+  </section>
+
+  <button type="button" class="btn primary xl" id="add"></button>
+
+  <section class="card">
+    <div class="label">LAMAN NG ORDER</div>
+    <div id="cart"></div>
+    <details class="custom">
+      <summary>+ Ibang item (hal. spaghetti box)</summary>
+      <div class="custom-row">
+        <label class="sr" for="c-name">Pangalan ng item</label>
+        <input id="c-name" type="text" placeholder="Pangalan" maxlength="60">
+        <label class="sr" for="c-price">Presyo</label>
+        <input id="c-price" type="number" inputmode="numeric" min="0" placeholder="₱">
+        <button type="button" class="btn dark" id="c-add">Idagdag</button>
+      </div>
+    </details>
+  </section>
+
+  <section class="block">
+    <div class="label">3 · SINO 'TO?</div>
+    <label class="sr" for="who">Customer</label>
+    <input id="who" type="text" placeholder="hal. magjowa, white cardigan" maxlength="120">
+    <label class="sr" for="note">Notes</label>
+    <input id="note" type="text" placeholder="Notes: hal. veggies sa ilalim, ham &amp; cheese sa ibabaw" maxlength="200">
+  </section>
+
+  <section class="block">
+    <div class="label">4 · BAYAD</div>
+    <div class="grid2" id="pays">
+      <button type="button" class="seg big" data-value="Cash">Cash</button>
+      <button type="button" class="seg big" data-value="GCash">GCash</button>
+    </div>
+    <button type="button" class="switch paid" id="paid" role="switch" aria-checked="true">
+      <span id="paid-text">Bayad na</span><span class="track"><span class="knob"></span></span>
+    </button>
+  </section>
+
+  <section class="totalbar">
+    <div class="totalbar-row">
+      <div><span class="tb-sub" id="summary-line"></span><span class="tb-title">Total</span></div>
+      <span class="tb-amount" id="total">₱0</span>
+    </div>
+    <button type="button" class="btn primary xl" id="save">I-save ang order</button>
+    <div class="error" id="error" role="alert" hidden></div>
+  </section>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='new_order.js') }}"></script>
+{% endblock %}

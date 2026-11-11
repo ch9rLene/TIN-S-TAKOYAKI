@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Menu{% endblock %}
+{% block heading %}Menu at presyo{% endblock %}
+
+{% block content %}
+<form method="post" class="block">
+  <div class="menu-head"><span>Flavor</span><span>4 pcs</span><span>8 pcs</span><span>Bukas</span></div>
+  {% for m in menu %}
+  <div class="menu-row">
+    <span class="menu-name">{{ m.name }}</span>
+    <label class="sr" for="p4_{{ m.id }}">{{ m.name }} 4 pcs</label>
+    <input id="p4_{{ m.id }}" name="p4_{{ m.id }}" type="number" min="0" inputmode="numeric" value="{{ m.p4 }}">
+    <label class="sr" for="p8_{{ m.id }}">{{ m.name }} 8 pcs</label>
+    <input id="p8_{{ m.id }}" name="p8_{{ m.id }}" type="number" min="0" inputmode="numeric" value="{{ m.p8 }}">
+    <label class="check">
+      <input type="checkbox" name="active_{{ m.id }}" {% if m.active %}checked{% endif %}>
+      <span class="sr">{{ m.name }} aktibo</span>
+    </label>
+  </div>
+  {% endfor %}
+  <p class="muted small">Alisin ang tsek kapag naubusan. Hindi ito mabubura sa lumang order.</p>
+  <button class="btn primary xl">I-save ang menu</button>
+</form>
+
+<form method="post" action="{{ url_for('add_flavor') }}" class="card">
+  <div class="label">BAGONG FLAVOR</div>
+  <label class="sr" for="n-name">Pangalan</label>
+  <input id="n-name" name="name" type="text" placeholder="Pangalan" maxlength="60" required>
+  <div class="grid2">
+    <label class="sr" for="n-p4">Presyo ng 4 pcs</label>
+    <input id="n-p4" name="p4" type="number" min="0" inputmode="numeric" placeholder="4 pcs ₱" required>
+    <label class="sr" for="n-p8">Presyo ng 8 pcs</label>
+    <input id="n-p8" name="p8" type="number" min="0" inputmode="numeric" placeholder="8 pcs ₱" required>
+  </div>
+  <button class="btn dark xl">Idagdag</button>
+</form>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}I-edit ang order{% endblock %}
+{% block heading %}Order #{{ o.queue_no }}{% endblock %}
+{% block meta %}{{ fmt_day(o.day) }}{% endblock %}
+
+{% block content %}
+<form method="post" class="block">
+  <label class="label" for="customer">SINO 'TO?</label>
+  <input id="customer" name="customer" type="text" value="{{ o.customer }}" maxlength="120">
+
+  <label class="label" for="note">NOTES</label>
+  <input id="note" name="note" type="text" value="{{ o.note }}" maxlength="200">
+
+  <label class="label" for="pay_method">PARAAN NG BAYAD</label>
+  <select id="pay_method" name="pay_method">
+    {% for p in PAY_METHODS %}<option value="{{ p }}" {% if p == o.pay_method %}selected{% endif %}>{{ p }}</option>{% endfor %}
+  </select>
+
+  <label class="label" for="packaging">PACKAGING</label>
+  <select id="packaging" name="packaging">
+    {% for p in PACKAGING %}<option value="{{ p }}" {% if p == o.packaging %}selected{% endif %}>{{ p }}</option>{% endfor %}
+  </select>
+
+  <p class="muted">Para baguhin ang laman o presyo, burahin ang order at gumawa ng bago.</p>
+
+  <button class="btn primary xl">I-save</button>
+  <a class="btn ghost xl" href="{{ url_for('orders', day=o.day) }}">Kanselahin</a>
+</form>
+{% endblock %}

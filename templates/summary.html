@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Buod{% endblock %}
+{% block heading %}Buod ngayong gabi{% endblock %}
+{% block meta %}{{ fmt_day(day) }}{% endblock %}
+
+{% block content %}
+<form method="get" class="dayform">
+  <label for="day">Araw</label>
+  <input id="day" type="date" name="day" value="{{ day }}" onchange="this.form.submit()">
+</form>
+
+<section class="hero">
+  <span class="hero-label">Total benta</span>
+  <span class="hero-amount">₱{{ '{:,}'.format(t.total) }}</span>
+  <span class="hero-sub">{{ t.n }} order · {{ pcs_total }} pcs takoyaki</span>
+</section>
+
+<section class="grid2">
+  <div class="stat"><span class="stat-label">CASH</span><span class="stat-val">₱{{ '{:,}'.format(t.cash) }}</span></div>
+  <div class="stat"><span class="stat-label">GCASH</span><span class="stat-val">₱{{ '{:,}'.format(t.gcash) }}</span><span class="stat-sub">Itugma sa GCash app</span></div>
+  <div class="stat"><span class="stat-label">NAKOLEKTA</span><span class="stat-val good">₱{{ '{:,}'.format(t.paid_total) }}</span></div>
+  <div class="stat{% if t.unpaid_n %} alert{% endif %}">
+    <span class="stat-label">UNPAID</span>
+    <span class="stat-val">₱{{ '{:,}'.format(t.unpaid_total) }}</span>
+    <span class="stat-sub">{{ t.unpaid_n }} order{% if unpaid_nos %} · {% for n in unpaid_nos %}#{{ n }}{% if not loop.last %}, {% endif %}{% endfor %}{% endif %}</span>
+  </div>
+</section>
+
+<section class="card">
+  <div class="between"><span class="label">NABENTANG PCS</span><span class="muted small">Pang-ihanda bukas</span></div>
+  {% for f in flavors %}
+  <div class="bar-row">
+    <div class="between"><span>{{ f.name }}</span><span>{{ f.pcs }} pcs</span></div>
+    <div class="bar"><div class="bar-fill" style="width: {{ f.pct }}%"></div></div>
+  </div>
+  {% else %}
+  <p class="muted pad">Wala pang benta sa araw na ito.</p>
+  {% endfor %}
+</section>
+
+<section class="grid2">
+  <div class="stat"><span class="stat-label">SPICY</span><span class="stat-val">{{ spicy_n }} <span class="stat-unit">sa {{ t.n }} order</span></span></div>
+  <div class="stat"><span class="stat-label">DI PA BINALIKAN</span><span class="stat-val">{{ t.waiting_n }} <span class="stat-unit">order{% if waiting_nos %} · {% for n in waiting_nos %}#{{ n }}{% if not loop.last %}, {% endif %}{% endfor %}{% endif %}</span></span></div>
+</section>
+
+<a class="btn ghost xl" href="{{ url_for('export_csv', day=day) }}">I-export ang benta (CSV)</a>
+{% endblock %}
